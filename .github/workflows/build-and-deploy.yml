@@ -56,7 +56,7 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
 
-      - name: Install oc CLI
+      - name: Install oc CLI 
         uses: redhat-actions/oc-installer@v1
 
       - name: Authenticate with OpenShift
@@ -73,4 +73,4 @@ jobs:
 
       - name: Trigger OpenShift Rollout
         run: |
-         oc rollout restart deployment/pets    
+         oc rollout restart deployment/pets 
