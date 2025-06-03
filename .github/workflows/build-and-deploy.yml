@@ -69,7 +69,9 @@ jobs:
 
       - name: Deploy with Helm
         run: |
-          helm upgrade --install pets ./charts/PETS --set image.tag=${{ needs.build_and_push.outputs.image_tag }}
+          helm upgrade --install pets ./charts/PETS \
+            --set image.repository=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ github.ref_name }}
 
       - name: Trigger OpenShift Rollout
         run: |
