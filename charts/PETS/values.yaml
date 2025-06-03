@@ -127,7 +127,7 @@ persistentVolumeClaim:
 
 cronJob:
   # -- Specifies whether a cache cleaning cronjob should be created
-  enabled: true
+  enabled: false
   # -- Every Monday & Thursday - https://crontab.guru/#0_0_*_*_1,4
   schedule: "0 0 * * 1,4"
   # -- In test environments, you might want to create the cronjob for consistency, but suspend it
