@@ -42,11 +42,11 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          tags: ghcr.io/bcgov/pets:${{ github.ref_name }}
           labels: ${{ steps.meta.outputs.labels }}
          
     outputs:
-      image_tag: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+      image_tag: ghcr.io/bcgov/pets:${{ github.ref_name }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -70,9 +70,8 @@ jobs:
       - name: Deploy with Helm
         run: |
           helm upgrade --install pets ./charts/PETS \
-            --set image.repository=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
-            --set image.tag=${{ github.ref_name }}
-
+             --set image.full=${{ needs.build_and_push.outputs.image_tag }}
+             
       - name: Trigger OpenShift Rollout
         run: |
          oc rollout restart deployment/pets 
