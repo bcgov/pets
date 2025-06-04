@@ -1,4 +1,4 @@
-FROM docker.io/bcgovimages/alpine-node-libreoffice:20.9.0
+FROM docker.io/bcgovimages/alpine-node-libreoffice:20.11.1
 
 ARG APP_ROOT=/opt/app-root/src
 ENV APP_PORT=8080 \
@@ -8,6 +8,13 @@ WORKDIR ${APP_ROOT}
 # Install Zip
 RUN apk --no-cache add zip && \
     rm -rf /var/cache/apk/*
+
+#Update configurations for PDF accessibility
+RUN sed -i \
+    -e 's|\(<prop oor:name="EnableTextAccessForAccessibilityTools"[^>]*>\(.*<value>\)\)[^<]*\(<\/value>\)|\1true\3|' \
+    -e 's|\(<prop oor:name="PDFUACompliance"[^>]*>\(.*<value>\)\)[^<]*\(<\/value>\)|\1true\3|' \
+    -e 's|\(<prop oor:name="UseTaggedPDF"[^>]*>\(.*<value>\)\)[^<]*\(<\/value>\)|\1true\3|' \
+    /usr/lib/libreoffice/share/registry/main.xcd
 
 # Install BCSans Font
 RUN wget https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/services-policies-for-government/policies-procedures-standards/web-content-development-guides/corporate-identity-assets/bcsansfont_print.zip?forcedownload=true -O bcsans.zip && \
