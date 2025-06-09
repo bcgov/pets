@@ -69,7 +69,7 @@ jobs:
       - name: Deploy with Helm
         run: |
           helm upgrade --install pets ./charts/PETS \
-             --set image.full= ghcr.io/bcgov/common-document-generation-service:latest
+             --set image.full=ghcr.io/bcgov/common-document-generation-service:latest
              
       - name: Trigger OpenShift Rollout
         run: |
