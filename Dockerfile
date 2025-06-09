@@ -9,13 +9,6 @@ WORKDIR ${APP_ROOT}
 RUN apk --no-cache add zip && \
     rm -rf /var/cache/apk/*
 
-#Update configurations for PDF accessibility
-RUN sed -i \
-    -e 's|\(<prop oor:name="EnableTextAccessForAccessibilityTools"[^>]*>\(.*<value>\)\)[^<]*\(<\/value>\)|\1true\3|' \
-    -e 's|\(<prop oor:name="PDFUACompliance"[^>]*>\(.*<value>\)\)[^<]*\(<\/value>\)|\1true\3|' \
-    -e 's|\(<prop oor:name="UseTaggedPDF"[^>]*>\(.*<value>\)\)[^<]*\(<\/value>\)|\1true\3|' \
-    /usr/lib/libreoffice/share/registry/main.xcd
-
 # Install BCSans Font
 RUN wget https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/services-policies-for-government/policies-procedures-standards/web-content-development-guides/corporate-identity-assets/bcsansfont_print.zip?forcedownload=true -O bcsans.zip && \
     unzip bcsans.zip && \
@@ -24,6 +17,11 @@ RUN wget https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/se
     install -m 644 ./BcSansFont_Print/*.ttf /usr/share/fonts/bcsans/ && \
     rm -rf ./BcSansFont_Print && \
     fc-cache -f
+
+# enable PDF/UA compliance in LibreOffice registry
+RUN sed -i \
+  's|<prop oor:name="PDFUACompliance" oor:type="xs:boolean" oor:nillable="false"><value>false</value></prop>|<prop oor:name="PDFUACompliance" oor:type="xs:boolean" oor:nillable="false"><value>true</value></prop>|' \
+  /usr/lib/libreoffice/share/registry/main.xcd
 
 # NPM Permission Fix
 RUN mkdir -p /.npm
