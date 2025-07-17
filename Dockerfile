@@ -1,4 +1,4 @@
-FROM docker.io/bcgovimages/alpine-node-libreoffice:20.9.0
+FROM docker.io/bcgovimages/alpine-node-libreoffice:20.11.1
 
 ARG APP_ROOT=/opt/app-root/src
 ENV APP_PORT=8080 \
@@ -17,6 +17,11 @@ RUN wget https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/se
     install -m 644 ./BcSansFont_Print/*.ttf /usr/share/fonts/bcsans/ && \
     rm -rf ./BcSansFont_Print && \
     fc-cache -f
+
+# enable PDF/UA compliance in LibreOffice registry
+RUN sed -i \
+  's|<prop oor:name="PDFUACompliance" oor:type="xs:boolean" oor:nillable="false"><value>false</value></prop>|<prop oor:name="PDFUACompliance" oor:type="xs:boolean" oor:nillable="false"><value>true</value></prop>|' \
+  /usr/lib/libreoffice/share/registry/main.xcd
 
 # NPM Permission Fix
 RUN mkdir -p /.npm

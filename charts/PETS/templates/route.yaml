@@ -11,7 +11,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.route.host }}
   host: {{ .Values.route.host | quote }}
+  {{- end }}
   {{- if .Values.route.path }}
   path: {{ .Values.route.path }}
   {{- end }}

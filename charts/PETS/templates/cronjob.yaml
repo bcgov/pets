@@ -9,6 +9,8 @@ spec:
   failedJobsHistoryLimit: 3
   successfulJobsHistoryLimit: 3
   startingDeadlineSeconds: 60
+  schedule: {{ .Values.cronJob.schedule }}
+  suspend: {{ .Values.cronJob.suspend }}
   jobTemplate:
     metadata:
       labels: {{ include "cdogs.labels" . | nindent 8 }}
@@ -55,6 +57,4 @@ spec:
             - name: file-cache-data
               persistentVolumeClaim:
                 claimName: {{ include "cdogs.configname" . }}-cache
-  schedule: {{ .Values.cronJob.schedule }}
-  suspend: {{ .Values.cronJob.suspend }}
 {{- end }}

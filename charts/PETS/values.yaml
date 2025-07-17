@@ -8,7 +8,7 @@ image:
   # -- Default image repository
   repository: docker.io/bcgovimages
   # -- Default image pull policy
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ~
 
@@ -94,7 +94,7 @@ route:
     haproxy.router.openshift.io/timeout: 60s
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  host: chart-example.local
+  host: ~
   # path: /
   tls:
     insecureEdgeTerminationPolicy: Redirect
@@ -127,15 +127,15 @@ persistentVolumeClaim:
 
 cronJob:
   # -- Specifies whether a cache cleaning cronjob should be created
-  enabled: true
+  enabled: false
   # -- Every Monday & Thursday - https://crontab.guru/#0_0_*_*_1,4
-  schedule: 0 0 * * 1,4
+  schedule: "0 0 * * 1,4"
   # -- In test environments, you might want to create the cronjob for consistency, but suspend it
   suspend: false
 
 config:
   # Set to true if you want to let Helm manage and overwrite your configmaps.
-  enabled: false
+  enabled: true
 
   # -- This should be set to true if and only if you require configmaps and secrets to be release
   # scoped. In the event you want all instances in the same namespace to share a similar
@@ -156,7 +156,7 @@ config:
 
     SERVER_BODYLIMIT: 100mb
     SERVER_LOGLEVEL: http
-    SERVER_PORT: "3000"
+    SERVER_PORT: "3001"
 
     CACHE_DIR: /var/lib/file-cache/data
     CACHE_SIZE: 2GB
